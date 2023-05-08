@@ -14,7 +14,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Dialog from '../ConfirmationDialog';
 import { useDispatch } from 'react-redux';
-import { setIsEditing, setEditingItem } from '../../store/pollSlice';
+import {
+  setIsEditing,
+  setEditingItem,
+} from '../../store/admin/pollSlice';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 const Index = (item) => {

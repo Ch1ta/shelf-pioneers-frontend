@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { registration } from '../../store/userSlice';
+import { registration } from '../../store/authSlice';
 import emailImage from '../../assets/email.png';
 
 import styles from './styles.module.css';

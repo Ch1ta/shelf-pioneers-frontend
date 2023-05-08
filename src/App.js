@@ -1,18 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { checkAuth } from './store/userSlice';
+import { checkAuth } from './store/authSlice';
 
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './Auth/Login';
+import Register from './Auth/Register';
 import AdminPanel from './AdminPanel';
+import Home from './Home';
 
 import './App.css';
 
 function App() {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuth);
-  const isAdmin = useSelector((state) => state.user.isAdmin);
+  const isAdmin = useSelector((state) => state.user.user.isAdmin);
   const isLoading = useSelector((state) => state.user.isLoading);
 
   React.useEffect(() => {
@@ -34,8 +35,6 @@ function App() {
         <Route path="/*" element={<Login />}></Route>
       </Routes>
     );
-  } else {
-    return <h1>Успешная авторизация</h1>;
   }
 
   if (isAdmin)
@@ -48,6 +47,8 @@ function App() {
         ></Route>
       </Routes>
     );
+
+  return <Home />;
 }
 
 export default App;

@@ -7,13 +7,13 @@ import {
   Select,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import { createSession } from '../../store/sessionSlice';
+import { createSession } from '../../store/admin/sessionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AddIcon from '@mui/icons-material/Add';
 import QRCode from 'qrcode.react';
 import SessionManager from './SessionManager';
-import { fetchQuiz } from '../../store/quizSlice';
-import { fetchPolls } from '../../store/pollSlice';
+import { fetchQuiz } from '../../store/admin/quizSlice';
+import { fetchPolls } from '../../store/admin/pollSlice';
 
 const Index = () => {
   const dispatch = useDispatch();

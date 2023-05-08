@@ -23,7 +23,7 @@ import {
   setIsEditing,
   setEditingItem,
   deleteQuiz,
-} from '../../store/quizSlice';
+} from '../../store/admin/quizSlice';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 const Index = (item) => {

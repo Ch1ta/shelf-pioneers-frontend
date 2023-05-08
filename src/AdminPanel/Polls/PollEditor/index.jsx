@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import SaveIcon from '@mui/icons-material/Save';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsEditing } from '../../../store/pollSlice';
+import { setIsEditing } from '../../../store/admin/pollSlice';
 
 const PollEditor = () => {
   const dispatch = useDispatch();

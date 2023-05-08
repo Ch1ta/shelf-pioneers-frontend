@@ -25,7 +25,7 @@ import {
   setQuestion,
   setTitle,
   updateQuiz,
-} from '../../../store/quizSlice';
+} from '../../../store/admin/quizSlice';
 
 const QuizEditor = () => {
   const dispatch = useDispatch();

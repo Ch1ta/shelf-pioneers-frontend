@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import SessionService from '../services/SessionService';
-import sessionManager from '../AdminPanel/CreateSession/SessionManager';
+import SessionService from '../../services/SessionService';
 
 const initialState = {
+  event: '',
   status: 'pending',
   link: null,
 };

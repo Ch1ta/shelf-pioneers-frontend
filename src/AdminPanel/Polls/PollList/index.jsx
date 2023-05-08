@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPolls, setIsEditing } from '../../../store/pollSlice';
+import {
+  fetchPolls,
+  setIsEditing,
+} from '../../../store/admin/pollSlice';
 
 import {
   Alert,

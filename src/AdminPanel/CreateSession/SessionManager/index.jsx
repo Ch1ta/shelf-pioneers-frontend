@@ -8,9 +8,9 @@ import {
   Select,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuiz } from '../../../store/quizSlice';
-import { fetchPolls } from '../../../store/pollSlice';
-import { startEvent } from '../../../store/sessionSlice';
+import { fetchQuiz } from '../../../store/admin/quizSlice';
+import { fetchPolls } from '../../../store/admin/pollSlice';
+import { startEvent } from '../../../store/admin/sessionSlice';
 
 const Index = () => {
   const dispatch = useDispatch();

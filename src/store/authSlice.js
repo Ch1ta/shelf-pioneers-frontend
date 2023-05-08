@@ -7,11 +7,13 @@ import { API_URL } from '../http';
 const initialState = {
   user: {},
   isAuth: false,
-  isAdmin: false,
   isLoading: false,
   registrationError: null,
   loginError: null,
   registrationSuccess: false,
+  //session
+  eventType: null,
+  eventId: null,
 };
 
 export const checkAuth = createAsyncThunk(
@@ -24,6 +26,7 @@ export const checkAuth = createAsyncThunk(
         withCredentials: true,
       });
 
+      console.log('access token ', response.data.accessToken);
       localStorage.setItem('token', response.data.accessToken);
       thunkAPI.dispatch(setAuth(true));
       thunkAPI.dispatch(setUser(response.data.user));
@@ -91,7 +94,7 @@ export const logout = createAsyncThunk(
   }
 );
 
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -125,5 +128,5 @@ export const {
   setRegistrationError,
   setLoginError,
   setRegistrationSuccess,
-} = userSlice.actions;
-export default userSlice.reducer;
+} = authSlice.actions;
+export default authSlice.reducer;

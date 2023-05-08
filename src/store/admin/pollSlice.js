@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import PollService from '../services/PollService';
+import PollService from '../../services/PollService';
 
 const initialState = {
   items: [],

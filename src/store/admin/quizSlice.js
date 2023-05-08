@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import QuizService from '../services/QuizService';
+import QuizService from '../../services/QuizService';
 
 const initialState = {
   items: [],
