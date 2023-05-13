@@ -7,8 +7,7 @@ import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const Index = () => {
-  const isEditing = useSelector((state) => state.quiz.isEditing);
-  const isCreating = useSelector((state) => state.quiz.isCreating);
+  const mode = useSelector((state) => state.quiz.mode);
 
   return (
     <Box
@@ -18,7 +17,7 @@ const Index = () => {
         padding: '20px',
       }}
     >
-      {isEditing ? <QuizEditor /> : <QuizList />}
+      {mode === null ? <QuizList /> : <QuizEditor />}
     </Box>
   );
 };

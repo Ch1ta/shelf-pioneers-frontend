@@ -1,14 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { checkAuth } from './store/authSlice';
 
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import AdminPanel from './AdminPanel';
-import Home from './Home';
 
-import './App.css';
+import './App.scss';
+import Home from './Home';
 
 function App() {
   const dispatch = useDispatch();
@@ -41,14 +41,17 @@ function App() {
     return (
       <Routes>
         <Route path="/admin/:param" element={<AdminPanel />}></Route>
-        <Route
-          path="/*"
-          element={<Navigate to={'/admin/programs'} />}
-        ></Route>
+        <Route path="/*" element={<Navigate to={'/admin/programs'} />}></Route>
       </Routes>
     );
 
-  return <Home />;
+  return (
+    <Routes>
+      <Route path="/session" element={<Home />}></Route>
+      <Route path="/session/:link" element={<Home />}></Route>
+      <Route path="/*" element={<Navigate to={'/session'} />}></Route>
+    </Routes>
+  );
 }
 
 export default App;

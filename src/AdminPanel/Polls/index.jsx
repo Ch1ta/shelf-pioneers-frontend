@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import PollList from './PollList';
 import PollEditor from './PollEditor';
@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const Index = () => {
-  const isEditing = useSelector((state) => state.poll.isEditing);
+  const mode = useSelector((state) => state.poll.mode);
 
   return (
     <Box
@@ -17,7 +17,7 @@ const Index = () => {
         padding: '20px',
       }}
     >
-      {isEditing ? <PollEditor /> : <PollList />}
+      {mode === null ? <PollList /> : <PollEditor />}
     </Box>
   );
 };

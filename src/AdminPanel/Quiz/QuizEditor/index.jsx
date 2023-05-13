@@ -4,7 +4,10 @@ import {
   Button,
   Card,
   Fab,
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
   TextField,
 } from '@mui/material';
 
@@ -21,20 +24,22 @@ import {
   removeAnswer,
   removeQuestion,
   setAnswer,
-  setIsEditing,
+  setCorrectIndex,
+  setMode,
   setQuestion,
   setTitle,
   updateQuiz,
 } from '../../../store/admin/quizSlice';
+import Typography from '@mui/material/Typography';
 
 const QuizEditor = () => {
   const dispatch = useDispatch();
 
-  const isCreating = useSelector((state) => state.quiz.isCreating);
   const quiz = useSelector((state) => state.quiz.editingItem);
+  const mode = useSelector((state) => state.quiz.mode);
 
   const handleBackwardsClick = () => {
-    dispatch(setIsEditing(false));
+    dispatch(setMode(null));
   };
   const handleTitleChange = (event) => {
     dispatch(setTitle(event.target.value));
@@ -42,12 +47,12 @@ const QuizEditor = () => {
   const handleQuestionChange = (questionIndex, newQuestion) => {
     dispatch(setQuestion({ questionIndex, newQuestion }));
   };
-  const handleAnswerChange = (
-    questionIndex,
-    answerIndex,
-    newAnswer
-  ) => {
+  const handleAnswerChange = (questionIndex, answerIndex, newAnswer) => {
     dispatch(setAnswer({ questionIndex, answerIndex, newAnswer }));
+  };
+
+  const handleCorrectIndexChange = (questionIndex, correctIndex) => {
+    dispatch(setCorrectIndex({ questionIndex, correctIndex }));
   };
   const handleAddQuestion = () => {
     dispatch(addQuestion());
@@ -63,11 +68,11 @@ const QuizEditor = () => {
   };
 
   const handleSave = () => {
-    if (isCreating) {
+    if (mode === 1) {
       dispatch(createQuiz());
-    } else {
-      dispatch(updateQuiz());
+      dispatch(setMode(2));
     }
+    if (mode === 2) dispatch(updateQuiz());
   };
 
   return (
@@ -121,28 +126,18 @@ const QuizEditor = () => {
             variant="filled"
             label={`Вопрос ${qIndex + 1}`}
             value={question.question}
-            onChange={(event) =>
-              handleQuestionChange(qIndex, event.target.value)
-            }
+            onChange={(event) => handleQuestionChange(qIndex, event.target.value)}
             fullWidth
             margin="normal"
           />
-
           {question.answers.map((answer, aIndex) => (
-            <Box
-              key={aIndex}
-              sx={{ display: 'flex', alignItems: 'center' }}
-            >
+            <Box key={aIndex} sx={{ display: 'flex', alignItems: 'center' }}>
               <TextField
                 sx={{ marginLeft: '50px', width: '400px' }}
                 label={`Ответ ${aIndex + 1}`}
                 value={answer}
                 onChange={(event) =>
-                  handleAnswerChange(
-                    qIndex,
-                    aIndex,
-                    event.target.value
-                  )
+                  handleAnswerChange(qIndex, aIndex, event.target.value)
                 }
                 margin="normal"
               />
@@ -173,14 +168,40 @@ const QuizEditor = () => {
               <AddIcon />
             </Fab>
           </Box>
-
-          <Button
-            sx={{ marginLeft: '20px' }}
-            onClick={() => handleRemoveQuestion(qIndex)}
+          <Box
+            sx={{
+              margin: '20px 0 0 50px',
+              width: 'max-content',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '10px',
+            }}
           >
-            <DeleteIcon />
-            Удалить
-          </Button>
+            <Typography variant="h6" sx={{ color: 'green' }}>
+              Верный ответ:
+            </Typography>
+            <FormControl sx={{ width: '70px' }}>
+              <Select
+                value={question.correctIndex}
+                onChange={(e) => handleCorrectIndexChange(qIndex, e.target.value)}
+              >
+                {question.answers.map((item, aIndex) => (
+                  <MenuItem value={aIndex}>{aIndex + 1}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              sx={{ marginRight: '20px' }}
+              onClick={() => handleRemoveQuestion(qIndex)}
+            >
+              <DeleteIcon />
+              Удалить
+            </Button>
+          </Box>
         </Card>
       ))}
       <Box

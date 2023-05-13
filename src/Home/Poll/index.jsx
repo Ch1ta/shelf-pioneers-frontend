@@ -1,20 +1,14 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useWindowHeight, useWindowWidth } from '@react-hook/window-size';
+import React, { useState } from 'react';
 
 import styles from './styles.module.scss';
-import Confetti from 'react-confetti';
+import { Box, TextField } from '@mui/material';
 import EventService from '../../services/EventService';
-import { setIsWaiting } from '../../store/user/eventSlice';
 
-const Index = ({ quiz, setIsWaiting }) => {
-  const width = useWindowWidth();
-  const height = useWindowHeight();
+const Index = ({ poll, setIsWaiting }) => {
+  const questions = poll.questions;
 
-  const questions = quiz.questions;
-
+  const [input, setInput] = useState('');
   const [step, setStep] = React.useState(0);
-
   const question = questions[step];
 
   const isFinished = step === questions.length;
@@ -24,25 +18,22 @@ const Index = ({ quiz, setIsWaiting }) => {
     }, 10000);
   }
 
-  const percentage = Math.round((step / questions.length) * 100);
-
-  const handleVariantClick = async (answerIndex) => {
+  const handleNext = async () => {
     await EventService.setQuizAnswer({
-      quizId: quiz.eventId,
+      quizId: poll.eventId,
       index: step,
-      answer: answerIndex,
+      answer: input,
     });
     setStep(step + 1);
+    setInput('');
   };
+
+  const percentage = Math.round((step / questions.length) * 100);
 
   if (!isFinished)
     return (
       <div className={styles.quiz1_wrapper}>
         <div className={styles.container}>
-          {/*<img
-          src="https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"
-          alt=""
-        />*/}
           <div>
             <div className={styles.progress}>
               <div
@@ -51,14 +42,18 @@ const Index = ({ quiz, setIsWaiting }) => {
               ></div>
             </div>
 
-            <h1>{question.question}</h1>
-            <ul>
-              {question.variants.map((item, index) => (
-                <li key={index} onClick={() => handleVariantClick(index)}>
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <h2>{question}</h2>
+            <br />
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <button onClick={handleNext}>Дальше</button>
+            </Box>
           </div>
         </div>
       </div>
@@ -66,7 +61,6 @@ const Index = ({ quiz, setIsWaiting }) => {
 
   return (
     <div className={styles.quiz1_wrapper}>
-      <Confetti height={height} width={width} />
       <div className={styles.container}>
         <div
           style={{

@@ -10,3 +10,35 @@
   align-items: center;
   justify-content: center;
 }
+
+
+.container {
+  min-height:200px;
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 30px;
+  padding: 40px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    margin-bottom: 50px
+  }
+
+  button {
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 30px;
+    border: 0;
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: darken(#0080ff, 3%);
+    color: #fff;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+}

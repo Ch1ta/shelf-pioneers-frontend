@@ -14,10 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Dialog from '../ConfirmationDialog';
 import { useDispatch } from 'react-redux';
-import {
-  setIsEditing,
-  setEditingItem,
-} from '../../store/admin/pollSlice';
+import { setMode, setEditingItem, deletePoll } from '../../store/admin/pollSlice';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 const Index = (item) => {
@@ -27,19 +24,16 @@ const Index = (item) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const handleEditClick = () => {
     dispatch(setEditingItem(item));
-    dispatch(setIsEditing(true));
+    dispatch(setMode(2));
   };
 
-  const handleDeleteClick = () => {};
+  const handleDeleteClick = () => {
+    dispatch(deletePoll(_id));
+  };
 
   return (
     <Box sx={{ width: '100%', m: 'auto', mt: 4 }}>
-      <Typography
-        sx={{ color: 'white' }}
-        variant="h5"
-        component="h2"
-        gutterBottom
-      >
+      <Typography sx={{ color: 'white' }} variant="h5" component="h2" gutterBottom>
         {title}
       </Typography>
 

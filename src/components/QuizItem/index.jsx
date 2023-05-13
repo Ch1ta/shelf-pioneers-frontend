@@ -19,11 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Dialog from '../ConfirmationDialog';
 import { useDispatch } from 'react-redux';
-import {
-  setIsEditing,
-  setEditingItem,
-  deleteQuiz,
-} from '../../store/admin/quizSlice';
+import { setMode, setEditingItem, deleteQuiz } from '../../store/admin/quizSlice';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 const Index = (item) => {
@@ -33,7 +29,7 @@ const Index = (item) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const handleEditClick = () => {
     dispatch(setEditingItem(item));
-    dispatch(setIsEditing(true));
+    dispatch(setMode(2));
   };
 
   const handleDeleteClick = () => {
@@ -42,12 +38,7 @@ const Index = (item) => {
 
   return (
     <Box sx={{ width: '100%', m: 'auto', mt: 4 }}>
-      <Typography
-        sx={{ color: 'white' }}
-        variant="h5"
-        component="h2"
-        gutterBottom
-      >
+      <Typography sx={{ color: 'white' }} variant="h5" component="h2" gutterBottom>
         {title}
       </Typography>
 

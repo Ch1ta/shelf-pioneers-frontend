@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -6,35 +6,39 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Slider,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuiz } from '../../../store/admin/quizSlice';
-import { fetchPolls } from '../../../store/admin/pollSlice';
-import { startEvent } from '../../../store/admin/sessionSlice';
+import { setCurrentEvent } from '../../../../store/admin/sessionSlice';
 
 const Index = () => {
   const dispatch = useDispatch();
-
   const [type, setType] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [timer, setTimer] = useState(15);
 
   const quizItems = useSelector((state) => state.quiz.items);
   const pollItems = useSelector((state) => state.poll.items);
+
   const handleChangeType = (event) => {
-    console.log(event.target.value);
     setType(event.target.value);
     setSelectedItem(null);
   };
   const handleChangeItem = (event) => {
-    const item = items.find(
-      (item) => item.title === event.target.value
-    );
-    console.log(item);
+    const item = items.find((item) => item.title === event.target.value);
     setSelectedItem(item);
   };
 
+  const handleTimerChange = (event) => {
+    setTimer(event.target.value);
+  };
+
+  const handleChangeTimer = (event) => {
+    setTimer(event.target.value);
+  };
+
   const handleStart = () => {
-    dispatch(startEvent({ type, id: selectedItem._id }));
+    dispatch(setCurrentEvent({ type, id: selectedItem._id, timer }));
   };
 
   let items = [];
@@ -43,24 +47,34 @@ const Index = () => {
       items = pollItems;
       break;
     case 'Quiz':
-      items = pollItems;
+      items = quizItems;
       break;
     case 'Game':
       items = [];
       break;
     default:
-      break;
   }
+  const timerMarks = [
+    {
+      value: 15,
+      label: '15c',
+    },
+    {
+      value: 30,
+      label: '30c',
+    },
+    {
+      value: 45,
+      label: '45c',
+    },
+    {
+      value: 60,
+      label: '60c',
+    },
+  ];
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-      }}
-    >
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
       <FormControl sx={{ width: '200px' }}>
         <InputLabel id="type-select-label">Тип</InputLabel>
         <Select
@@ -76,7 +90,7 @@ const Index = () => {
       </FormControl>
       {type && (
         <FormControl sx={{ width: '200px' }}>
-          <InputLabel id="item-select-label">Item</InputLabel>
+          <InputLabel id="item-select-label"></InputLabel>
           <Select
             labelId="item-select-label"
             id="item-select"
@@ -92,19 +106,28 @@ const Index = () => {
         </FormControl>
       )}
       {selectedItem && (
-        <Box
-          sx={{
-            width: '200px',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <Button
-            sx={{ width: '200px' }}
-            variant="contained"
-            color="success"
-            onClick={handleStart}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
+            <p>Время на ответ</p>
+            <Slider
+              sx={{ width: '200px' }}
+              defaultValue={15}
+              marks={timerMarks}
+              onChange={handleTimerChange}
+              valueLabelDisplay="auto"
+              step={15}
+              min={15}
+              max={60}
+            />
+          </Box>
+
+          <Button variant="outlined" color="success" onClick={handleStart}>
             Начать
           </Button>
         </Box>

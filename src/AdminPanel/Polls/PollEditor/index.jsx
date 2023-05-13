@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  Fab,
-  IconButton,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Card, Fab, IconButton, TextField } from '@mui/material';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
@@ -14,37 +7,45 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import SaveIcon from '@mui/icons-material/Save';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsEditing } from '../../../store/admin/pollSlice';
+import {
+  addQuestion,
+  createPoll,
+  removeQuestion,
+  setMode,
+  setQuestion,
+  setTitle,
+  updatePoll,
+} from '../../../store/admin/pollSlice';
+import { createQuiz, updateQuiz } from '../../../store/admin/quizSlice';
 
 const PollEditor = () => {
   const dispatch = useDispatch();
 
-  //const isCreating = useSelector((state) => state.quiz.isCreating);
   const poll = useSelector((state) => state.poll.editingItem);
-
+  const mode = useSelector((state) => state.poll.mode);
   const handleBackwardsClick = () => {
-    dispatch(setIsEditing(false));
+    dispatch(setMode(null));
   };
   const handleTitleChange = (event) => {
-    //dispatch(setTitle(event.target.value));
+    dispatch(setTitle(event.target.value));
   };
   const handleQuestionChange = (questionIndex, newQuestion) => {
-    //dispatch(setQuestion({ questionIndex, newQuestion }));
+    dispatch(setQuestion({ questionIndex, newQuestion }));
   };
   const handleAddQuestion = () => {
-    //dispatch(addQuestion());
+    dispatch(addQuestion());
   };
 
   const handleRemoveQuestion = (questionIndex) => {
-    //dispatch(removeQuestion(questionIndex));
+    dispatch(removeQuestion(questionIndex));
   };
 
   const handleSave = () => {
-    /*if (isCreating) {
-      dispatch(createQuiz());
-    } else {
-      dispatch(updateQuiz());
-    }*/
+    if (mode === 1) {
+      dispatch(createPoll());
+      dispatch(setMode(2));
+    }
+    if (mode === 2) dispatch(updatePoll());
   };
 
   return (
@@ -98,9 +99,7 @@ const PollEditor = () => {
             variant="filled"
             label={`Вопрос ${qIndex + 1}`}
             value={question}
-            onChange={(event) =>
-              handleQuestionChange(qIndex, event.target.value)
-            }
+            onChange={(event) => handleQuestionChange(qIndex, event.target.value)}
             fullWidth
             margin="normal"
           />

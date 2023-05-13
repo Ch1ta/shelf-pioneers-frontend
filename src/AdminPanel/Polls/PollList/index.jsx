@@ -1,19 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchPolls,
-  setIsEditing,
-} from '../../../store/admin/pollSlice';
+import { fetchPolls } from '../../../store/admin/pollSlice';
 
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  Fab,
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import PollItem from '../../../components/PollItem';
+import { resetEditingItem, setMode } from '../../../store/admin/pollSlice';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -25,7 +17,8 @@ const Index = () => {
   }, []);
 
   const handleAddClick = () => {
-    dispatch(setIsEditing(true));
+    dispatch(resetEditingItem());
+    dispatch(setMode(1));
   };
 
   return (

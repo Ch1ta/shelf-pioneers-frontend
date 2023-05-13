@@ -1,10 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 
 import Navbar from './Navbar';
 import Programs from './Programs';
-import CreateProgram from './CreateProgram';
-import CreateSession from './CreateSession';
+import CreateSession from './Session';
 import Polls from './Polls';
 import Quiz from './Quiz';
 
@@ -19,15 +17,11 @@ const Index = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.navbar}>
-        <Navbar
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
-        />
+        <Navbar activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
       </div>
       <div className={styles.content}>
         {param === 'active' && <CreateSession />}
         {param === 'programs' && <Programs />}
-        {param === 'create' && <CreateProgram />}
         {param === 'polls' && <Polls />}
         {param === 'quiz' && <Quiz />}
         {param === 'history' && <h1>В разработке</h1>}

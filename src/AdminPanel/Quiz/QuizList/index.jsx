@@ -1,14 +1,10 @@
 import React from 'react';
 import QuizItem from '../../../components/QuizItem';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchQuiz,
-  setIsCreating,
-  setIsEditing,
-} from '../../../store/admin/quizSlice';
 
 import { Alert, Box, Button, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { fetchQuiz, resetEditingItem, setMode } from '../../../store/admin/quizSlice';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -20,8 +16,8 @@ const Index = () => {
   }, []);
 
   const handleAddClick = () => {
-    dispatch(setIsCreating(true));
-    dispatch(setIsEditing(true));
+    dispatch(resetEditingItem());
+    dispatch(setMode(1));
   };
 
   return (
