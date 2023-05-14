@@ -34,6 +34,6 @@ export default class SessionService {
   }
 
   static async closeSession(link) {
-    return $api.patch(`/sessions/${link}/close`)
+    return $api.patch(`/sessions/${link}/close`);
   }
 }

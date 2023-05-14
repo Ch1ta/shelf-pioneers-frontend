@@ -1,13 +1,15 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, CircularProgress } from '@mui/material';
 
 import QR from './QR';
-import EventSelector from './EventSelector';
-import EventMonitor from './EventMonitor';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as PropTypes from 'prop-types';
-import { closeCurrentEvent, closeSession } from '../../../store/admin/sessionSlice';
+import { closeSession } from '../../../store/admin/sessionSlice';
+import SessionService from '../../../services/SessionService';
+import EventSelector from './EventSelector';
+import PollMonitor from './PollMonitor';
+import QuizMonitor from './QuizMonitor';
 
 Button.propTypes = {
   sx: PropTypes.shape({
@@ -22,11 +24,33 @@ Button.propTypes = {
   children: PropTypes.node,
 };
 const Index = ({ eventId }) => {
-  console.log('event ', eventId);
   const dispatch = useDispatch();
 
   const link = useSelector((state) => state.session.currentSession.link);
-  const currentEvent = useSelector((state) => state.session.currentSession.currentEvent);
+  const currentEventRef = useSelector(
+    (state) => state.session.currentSession.currentEvent
+  );
+  const [currentEventStats, setCurrentEventStats] = useState();
+
+  useEffect(() => {
+    if (currentEventRef) {
+      const getEvent = async () => {
+        try {
+          const result = await SessionService.getEventStats(currentEventRef);
+          if (result.status === 200) {
+            console.log(result);
+            setCurrentEventStats(result.data);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      const interval = setInterval(() => {
+        getEvent();
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [currentEventRef]);
 
   const onCloseClick = () => {
     dispatch(closeSession(link));
@@ -63,9 +87,30 @@ const Index = ({ eventId }) => {
           Завершить сессию
         </Button>
       </Box>
-
       <Box sx={{ width: '50%', paddingTop: '40px' }}>
-        {currentEvent ? <EventMonitor eventId={currentEvent} /> : <EventSelector />}
+        {!currentEventRef && <EventSelector />}
+        {currentEventRef && !currentEventStats && (
+          <Box
+            sx={{
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress size={60} />
+          </Box>
+        )}
+        {currentEventRef && currentEventStats && (
+          <>
+            {currentEventStats.type === 'Quiz' && (
+              <QuizMonitor eventStats={currentEventStats} />
+            )}
+            {currentEventStats.type === 'Poll' && (
+              <PollMonitor eventStats={currentEventStats} />
+            )}
+          </>
+        )}
       </Box>
     </Box>
   );
